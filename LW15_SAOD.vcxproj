@@ -127,11 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="improvedSorting.cpp" />
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="sorting.cpp" />
     <ClCompile Include="LW15_SAOD.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="improvedSorting.h" />
     <ClInclude Include="LW15_SAOD.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="sorting.h" />

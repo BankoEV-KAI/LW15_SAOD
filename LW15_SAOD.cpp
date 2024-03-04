@@ -3,6 +3,7 @@
 #include "menu.h"
 #include <iostream>
 #include "LW15_SAOD.h"
+#include "improvedSorting.h"
 
 int size;
 
@@ -11,6 +12,8 @@ int main()
     setlocale(LC_ALL, "ru");
     srand(static_cast<unsigned int>(time(0)));
 
+
+    
     while (true) {
         printMenu(1);
         enteringNumber(0, 2, operation);
@@ -23,6 +26,11 @@ int main()
             bubbleSortArray();
             insertionSortArray();
             selectionSortArray();
+            cocktailSort();
+            startQuickSort();
+            heapSort();
+            shellSort();
+            
             break;
         case 2:
             printMenuCountArray();

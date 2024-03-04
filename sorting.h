@@ -16,20 +16,21 @@ extern std::vector<int> arrayD;
 extern int comparisonCounter;
 extern int forwardingCounter;
 
+void printCounters();
+int* copy();
+void resetCounters();
+
 void bubbleSortArray();
-
-void bubbleSortVector(std::vector<int> numbers);
-
 void selectionSortArray();
-
-void selectionSortVector(std::vector<int> numbers);
-
 void insertionSortArray();
 
-void insertionSortVector(std::vector<int> arr);
-
-void printVector(std::vector<int> numbers);
-
 void printArray(int arr[]);
-
 void fillingArray(bool key, int Size);
+
+
+
+
+void bubbleSortVector(std::vector<int> numbers);
+void selectionSortVector(std::vector<int> numbers);
+void insertionSortVector(std::vector<int> arr);
+void printVector(std::vector<int> numbers);

@@ -7,15 +7,58 @@ int sizeTag{0};
 int* arrayS = nullptr;
 int comparisonCounter{ 0 };
 int forwardingCounter{ 0 };
-std::vector<int>	 arrayD;
+std::vector<int> arrayD;
 
+
+//для информационной части
+
+void resetCounters() {
+	comparisonCounter = 0;
+	forwardingCounter = 0;
+}
+
+void printCounters() {
+	std::cout << "сравнений: " << comparisonCounter << ", пересылок: " << forwardingCounter << std::endl;
+}
+
+int* copy() {
+	int* coped = new int[sizeTag];
+	for (int i = 0; i < sizeTag; i++)
+		coped[i] = arrayS[i];
+	return coped;
+}
+
+void printArray(int arr[]) {
+
+	for (int i = 0; i < sizeTag; i++) {
+		std::cout << arr[i] << " ";
+	}
+	std::cout << std::endl;
+}
+
+void fillingArray(bool key, int size) {
+	if (key) {
+		if (arrayS != nullptr) delete[] arrayS;
+		arrayS = new int[size];
+		for (int i = 0; i < size; i++) {
+
+			arrayS[i] = rand() % 100;
+		}
+
+	}
+	else {
+		for (int i = 0; i < size; i++)
+			arrayD.push_back(rand() % 100);
+	}
+	sizeTag = size;
+}
+
+
+//базовые методы сортировки: обменом, выбором, вставками
 
 void bubbleSortArray() {
-	comparisonCounter = 0; forwardingCounter = 0;
-	int* arr = new int[sizeTag];
-	for (int i = 0; i < sizeTag; i++)
-		arr[i] = arrayS[i];
-
+	resetCounters();
+	int* arr = copy();
 	for (int i = 0; i < sizeTag - 1; i++) {
 		for (int j = 0; j < sizeTag - i - 1; j++) {
 			comparisonCounter++;
@@ -31,18 +74,20 @@ void bubbleSortArray() {
 		}
 	}
 
-
-	std::cout << "Отсортирован пузырьковой сортировкой: ";
-	printArray(arr);
-	std::cout << "Количество сравнений " << comparisonCounter << ", количество пересылок " << forwardingCounter << " за время сортировки" << std::endl;
-
+	if (sizeTag <= 20) {
+		std::cout << "Отсортирован пузырьковой сортировкой: ";
+		printArray(arr);
+		printCounters();
+	}
+	else {
+		std::cout << "Для введенного массива из " << sizeTag << " элементов сортировка пузырьком потребовала:  ";
+		printCounters();
+	}
 }
 
 void selectionSortArray() {
-	int* arr = new int[sizeTag];
-	for (int i = 0; i < sizeTag; i++)
-		arr[i] = arrayS[i];
-	comparisonCounter = 0; forwardingCounter = 0;
+	resetCounters();
+	int* arr = copy();
 	for (int i = 0; i < sizeTag - 1; i++) {
 		int min_index = i;
 		for (int j = i + 1; j < sizeTag; j++) {
@@ -55,16 +100,22 @@ void selectionSortArray() {
 		forwardingCounter++;
 		std::swap(arr[i], arr[min_index]);
 	}
-	std::cout << "Отсортирован методом выбора: ";
-	printArray(arr);
-	std::cout << "Количество сравнений " << comparisonCounter << ", количество пересылок " << forwardingCounter << " за время сортировки" << std::endl;
+
+	if (sizeTag <= 20) {
+		std::cout << "Отсортирован сортировкой выбором: ";
+		printArray(arr);
+		printCounters();
+	}
+	else {
+		std::cout << "Для введенного массива из " << sizeTag << " элементов сортировка выбором потребовала:  ";
+		printCounters();
+	}
 }
 
 void insertionSortArray() {
-	int* arr = new int[sizeTag];
-	for (int i = 0; i < sizeTag; i++)
-		arr[i] = arrayS[i];
-	comparisonCounter = 0; forwardingCounter = 0;
+	resetCounters();
+
+	int* arr = copy();
 	for (int i = 1; i < sizeTag; i++) {
 		int key = arr[i];
 		int j = i - 1;
@@ -77,36 +128,16 @@ void insertionSortArray() {
 
 		arr[j + 1] = key;
 	}
-	std::cout << "Отсортирован вставками: ";
-	printArray(arr);
-	std::cout << "Количество сравнений " << comparisonCounter << ", количество пересылок " << forwardingCounter << " за время сортировки" << std::endl;
-
-
-}
-
-void printArray(int arr[]) {
-	
-	for (int i = 0; i < sizeTag; i++) {
-		std::cout << arr[i] << " ";
-	}
-	std::cout << std::endl;
-}
-
-void fillingArray(bool key, int size) {
-	if (key) {
-		if (arrayS != nullptr) delete[] arrayS;
-		arrayS = new int[size];
-		for (int i = 0; i < size; i++) {
-			
-			arrayS[i] = rand() % 100;
-		}
-		
+	if (sizeTag <= 20) {
+		std::cout << "Отсортирован сортировкой вставками: ";
+		printArray(arr);
+		printCounters();
 	}
 	else {
-		for(int i=0; i < size; i++)
-		arrayD.push_back(rand() % 100);
+		std::cout << "Для введенного массива из " << sizeTag << " элементов сортировка вставками потребовала:  ";
+		printCounters();
 	}
-	sizeTag = size;
+
 }
 
 
