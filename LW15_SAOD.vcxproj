@@ -131,12 +131,14 @@
     <ClCompile Include="menu.cpp" />
     <ClCompile Include="sorting.cpp" />
     <ClCompile Include="LW15_SAOD.cpp" />
+    <ClCompile Include="specialSorting.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="improvedSorting.h" />
     <ClInclude Include="LW15_SAOD.h" />
     <ClInclude Include="menu.h" />
     <ClInclude Include="sorting.h" />
+    <ClInclude Include="specialSorting.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

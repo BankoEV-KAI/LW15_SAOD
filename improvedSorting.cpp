@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-
+//улучшенная сортировка пузырьком
 void cocktailSort() {
     resetCounters();
     int* arr = copy();
@@ -53,6 +53,7 @@ void cocktailSort() {
     }
 }
 
+//быстрая сортировка
 void quickSort(int* mas, int size) {
     int i = 0;
     int j = size - 1;
@@ -129,6 +130,7 @@ void heapify(int arr[], int n, int i) {
     }
 }
 
+//сортировка кучей, она же перамидальная сортировка 
 void heapSort() {
     resetCounters();
     int* arr = copy();
@@ -154,11 +156,42 @@ void heapSort() {
     }
 }
 
+
+//улучшенная сортировка вставками
 void shellSort() {
     resetCounters();
     int* arr = copy();
+    int countSteps = log2(sizeTag);
+    int steps[]{ 1,3,7,15,31,63,127,255,511,1023,2047,4097,8191 }; //формула элемента 2^(i+1) + 1;
+    /*использована теорема (А.А. Папернова, Г.В. Стасевича)*/
+    for (int gap = countSteps - 1; gap > -1; gap--) {
+        int H = steps[gap];
+        for (int i = H; i < sizeTag; i++) {
+            int temp = arr[i];
+            int j;
+            for (j = i; j >= H; j -= H) {
+                comparisonCounter++;
+                if (arr[j - H] > temp) {
+                    arr[j] = arr[j - H];
+                    forwardingCounter++;
+                }
+                else {
+                    break;
+                }
+            }
+            arr[j] = temp;
+        }
+    }
 
+    
+    
+    /*
+    // Если делать каждый шаг/2
+    printCounters();
+    resetCounters();
+    arr = copy();
     for (int gap = sizeTag / 2; gap > 0; gap /= 2) {
+        std::cout << gap << " ";
         for (int i = gap; i < sizeTag; i++) {
             int temp = arr[i];
             int j;
@@ -175,6 +208,8 @@ void shellSort() {
             arr[j] = temp;
         }
     }
+    std::cout << std::endl;
+    */
 
     if (sizeTag <= 20) {
         std::cout << "Отсортирован сортировкой Шелла: ";

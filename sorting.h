@@ -30,7 +30,7 @@ void fillingArray(bool key, int Size);
 
 
 
-void bubbleSortVector(std::vector<int> numbers);
+void bubbleSortVector(std::vector<int>& numbers);
 void selectionSortVector(std::vector<int> numbers);
 void insertionSortVector(std::vector<int> arr);
 void printVector(std::vector<int> numbers);

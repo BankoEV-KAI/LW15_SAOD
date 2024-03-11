@@ -143,7 +143,7 @@ void insertionSortArray() {
 
 //Если все таки верну вектор
 
-void bubbleSortVector(std::vector<int> numbers)
+void bubbleSortVector(std::vector<int>& numbers)
 {
 	for (int i = numbers.size() - 1; i >= 0; i--) {
 		for (int j = 1; j <= i; j++) {
@@ -186,6 +186,5 @@ void insertionSortVector(std::vector<int> arr) {
 void printVector(std::vector<int> numbers) {
 	for (int n : numbers)
 		std::cout << n << " ";
-	std::cout << std::endl;
 }
 
