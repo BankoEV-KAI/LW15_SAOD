@@ -4,12 +4,12 @@
 #include <iostream>
 
 
-//создание "специальных" массивов элементов
+//СЃРѕР·РґР°РЅРёРµ "СЃРїРµС†РёР°Р»СЊРЅС‹С…" РјР°СЃСЃРёРІРѕРІ СЌР»РµРјРµРЅС‚РѕРІ
 void generateSpecialArray(bool key) {
 	if (arrayS != nullptr) delete[] arrayS;
 	arrayS = new int[sizeTag];
 
-	if (!key) { //для карманной сортировки БЕЗ повторов
+	if (!key) { //РґР»СЏ РєР°СЂРјР°РЅРЅРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРё Р‘Р•Р— РїРѕРІС‚РѕСЂРѕРІ
 		for (int i = 0; i < sizeTag; i++) arrayS[i] = i;
 		int randIndex;
 		for (int i = 0; i < sizeTag; i++) {
@@ -18,14 +18,14 @@ void generateSpecialArray(bool key) {
 		}
 	}
 
-	std::cout << "Начальный массив: ";
+	std::cout << "РќР°С‡Р°Р»СЊРЅС‹Р№ РјР°СЃСЃРёРІ: ";
 	printArray(arrayS);
 }
 
-//карманная сортировка БЕЗ повторов
+//РєР°СЂРјР°РЅРЅР°СЏ СЃРѕСЂС‚РёСЂРѕРІРєР° Р‘Р•Р— РїРѕРІС‚РѕСЂРѕРІ
 void pocketSort(bool key) {
 	generateSpecialArray(false);
-	/* Пример из методички
+	/* РџСЂРёРјРµСЂ РёР· РјРµС‚РѕРґРёС‡РєРё
 	sizeTag = 10;
 	arrayS = new int[10] {3, 1, 4, 6, 0, 7, 2, 9, 5, 8};
 	printArray(arrayS);
@@ -59,12 +59,12 @@ void pocketSort(bool key) {
 	}
 
 	if (sizeTag <= 20) {
-		std::cout << "Отсортирован карманной сортировкой: ";
+		std::cout << "РћС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅ РєР°СЂРјР°РЅРЅРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№: ";
 		printArray(arr);
 		printCounters();
 	}
 	else {
-		std::cout << "Для введенного массива из " << sizeTag << " элементов карманная сортировка потребовала:  ";
+		std::cout << "Р”Р»СЏ РІРІРµРґРµРЅРЅРѕРіРѕ РјР°СЃСЃРёРІР° РёР· " << sizeTag << " СЌР»РµРјРµРЅС‚РѕРІ РєР°СЂРјР°РЅРЅР°СЏ СЃРѕСЂС‚РёСЂРѕРІРєР° РїРѕС‚СЂРµР±РѕРІР°Р»Р°:  ";
 		printCounters();
 	}
 }
@@ -98,10 +98,10 @@ void countSort(int arr[], int n, int exp) {
 	delete[] output;
 }
 
-//поразрядная сортировка БЕЗ использования списка
+//РїРѕСЂР°Р·СЂСЏРґРЅР°СЏ СЃРѕСЂС‚РёСЂРѕРІРєР° Р‘Р•Р— РёСЃРїРѕР»СЊР·РѕРІР°РЅРёСЏ СЃРїРёСЃРєР°
 void radixSort() {
 	
-	std::cout << "Начальный массив элементов: ";
+	std::cout << "РќР°С‡Р°Р»СЊРЅС‹Р№ РјР°СЃСЃРёРІ СЌР»РµРјРµРЅС‚РѕРІ: ";
 
 	/*
 	sizeTag = 15;
@@ -121,19 +121,19 @@ void radixSort() {
 	}
 	int i{ 1 };
 	for (int exp = 1; maxNum / exp > 0; exp *= 10) {
-		std::cout << "Массив, отсортирован по " << i++ << " разряду: " << std::endl;
+		std::cout << "РњР°СЃСЃРёРІ, РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅ РїРѕ " << i++ << " СЂР°Р·СЂСЏРґСѓ: " << std::endl;
 		countSort(arr, sizeTag, exp);
 		printArray(arr);
 	}
-	std::cout << "Полностью отсортированный массив: ";
+	std::cout << "РџРѕР»РЅРѕСЃС‚СЊСЋ РѕС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№ РјР°СЃСЃРёРІ: ";
 	printArray(arr);
 	printCounters();
 }
 
 
-//сортировки которые предполагают использование дополнительного списка
+//СЃРѕСЂС‚РёСЂРѕРІРєРё РєРѕС‚РѕСЂС‹Рµ РїСЂРµРґРїРѕР»Р°РіР°СЋС‚ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµ РґРѕРїРѕР»РЅРёС‚РµР»СЊРЅРѕРіРѕ СЃРїРёСЃРєР°
 
-//карманная сортировка С повторами
+//РєР°СЂРјР°РЅРЅР°СЏ СЃРѕСЂС‚РёСЂРѕРІРєР° РЎ РїРѕРІС‚РѕСЂР°РјРё
 void generalizedPocketSort()
 {
 	resetCounters();
@@ -141,13 +141,13 @@ void generalizedPocketSort()
 	int arraySize = sizeTag;
 	int* arr;
 
-	//создание массива элементов
+	//СЃРѕР·РґР°РЅРёРµ РјР°СЃСЃРёРІР° СЌР»РµРјРµРЅС‚РѕРІ
 	if (sizeTag > 0 && sizeTag <= 10000)
 	{
 		arr = new int[sizeTag];
 		for (int i = 0; i < sizeTag; i++)
 			arr[i] = rand() % sizeTag;
-		std::cout << "Массив создан:" << std::endl;
+		std::cout << "РњР°СЃСЃРёРІ СЃРѕР·РґР°РЅ:" << std::endl;
 		if(sizeTag <= 20)
 			printArray(arr);
 	}
@@ -168,7 +168,7 @@ void generalizedPocketSort()
 	delete[] sortedArray;
 }
 
-//поразрядная сортировка С использованием списка
+//РїРѕСЂР°Р·СЂСЏРґРЅР°СЏ СЃРѕСЂС‚РёСЂРѕРІРєР° РЎ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј СЃРїРёСЃРєР°
 void RadixSort()
 {
 	int size = sizeTag;
@@ -209,14 +209,14 @@ void RadixSort()
 		for (int j = 0; j < 10; j++)
 			ClearList(sortedArray[j].next);
 	}
-	std::cout << "Отсортированный массив:" << std::endl;
+	std::cout << "РћС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№ РјР°СЃСЃРёРІ:" << std::endl;
 	printArray(arr);
 	printCounters();
 	delete[] sortedArray;
 }
 
 
-//Дополнительные функции для создания списка
+//Р”РѕРїРѕР»РЅРёС‚РµР»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё РґР»СЏ СЃРѕР·РґР°РЅРёСЏ СЃРїРёСЃРєР°
 
 void AddItem(ListItem* pItem, int value)
 {
@@ -239,7 +239,7 @@ void ClearList(ListItem* head)
 
 void ShowPocket(ListItem* mas, int n)
 {
-	std::cout << "Отсортированный массив:" << std::endl;
+	std::cout << "РћС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅРЅС‹Р№ РјР°СЃСЃРёРІ:" << std::endl;
 	for (int i = 0; i < n; i++)
 	{
 		ListItem* current = mas[i].next;
