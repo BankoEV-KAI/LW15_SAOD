@@ -1,13 +1,11 @@
 #include "sorting.h"
 #include "menu.h"
 
-int countIteration{ 0 };
 int operation{0};
 int sizeTag{0};
 int* arrayS = nullptr;
 int comparisonCounter{ 0 };
 int forwardingCounter{ 0 };
-std::vector<int> arrayD;
 
 
 //дл€ информационной части
@@ -37,6 +35,7 @@ void printArray(int arr[]) {
 }
 
 void fillingArray(bool key, int size) {
+
 	if (key) {
 		if (arrayS != nullptr) delete[] arrayS;
 		arrayS = new int[size];
@@ -45,10 +44,6 @@ void fillingArray(bool key, int size) {
 			arrayS[i] = rand() % 100;
 		}
 
-	}
-	else {
-		for (int i = 0; i < size; i++)
-			arrayD.push_back(rand() % 100);
 	}
 	sizeTag = size;
 }
@@ -61,19 +56,20 @@ void bubbleSortArray() {
 	int* arr = copy();
 	for (int i = 0; i < sizeTag - 1; i++) {
 		for (int j = 0; j < sizeTag - i - 1; j++) {
-			comparisonCounter++;
+			comparisonCounter++; //сравнени€
 			if (arr[j] > arr[j + 1]) {
 				std::swap(arr[j], arr[j + 1]);
-				/*
+				/* ¬ €вном виде:
 				int* temp = arr[j];
 				arr[j] = arr[j + 1];
 				arr[j + 1] = temp;
 				*/
-				forwardingCounter++;
+				forwardingCounter++; //пересылки
 			}
 		}
 	}
 
+	// просто дл€ вывода 
 	if (sizeTag <= 20) {
 		std::cout << "ќтсортирован пузырьковой сортировкой: ";
 		printArray(arr);
@@ -91,13 +87,13 @@ void selectionSortArray() {
 	for (int i = 0; i < sizeTag - 1; i++) {
 		int min_index = i;
 		for (int j = i + 1; j < sizeTag; j++) {
+			comparisonCounter++; //сравнени€
 			if (arr[j] < arr[min_index]) {
 				min_index = j;
 			}
-			comparisonCounter++;
 		}
-		if (min_index == i) forwardingCounter--;
-		forwardingCounter++;
+
+		if (arr[min_index] != arr[i]) forwardingCounter++; //пересылки
 		std::swap(arr[i], arr[min_index]);
 	}
 
@@ -119,15 +115,20 @@ void insertionSortArray() {
 	for (int i = 1; i < sizeTag; i++) {
 		int key = arr[i];
 		int j = i - 1;
-		comparisonCounter++;
+
 		while (j >= 0 && arr[j] > key) {
+			comparisonCounter++; //сравнени€
+			forwardingCounter++; //пересылки
 			arr[j + 1] = arr[j];
 			j--;
-			forwardingCounter++;
+			
 		}
 
+		comparisonCounter++; //сравнени€
 		arr[j + 1] = key;
 	}
+
+
 	if (sizeTag <= 20) {
 		std::cout << "ќтсортирован сортировкой вставками: ";
 		printArray(arr);
@@ -138,53 +139,5 @@ void insertionSortArray() {
 		printCounters();
 	}
 
-}
-
-
-//≈сли все таки верну вектор
-
-void bubbleSortVector(std::vector<int>& numbers)
-{
-	for (int i = numbers.size() - 1; i >= 0; i--) {
-		for (int j = 1; j <= i; j++) {
-			if (numbers[j - 1] > numbers[j]) {
-				std::swap(numbers[j - 1], numbers[j]);
-			}
-		}
-	}
-
-}
-void selectionSortVector(std::vector<int> numbers) {
-	int n = numbers.size();
-	for (int i = 0; i < n - 1; i++) {
-		int min_index = i;
-		for (int j = i + 1; j < n; j++) {
-			if (numbers[j] < numbers[min_index]) {
-				min_index = j;
-			}
-		}
-		std::swap(numbers[i], numbers[min_index]);
-	}
-}
-void insertionSortVector(std::vector<int> arr) {
-	if (arr.empty()) {
-		return;
-	}
-
-	for (size_t i = 1; i < arr.size(); i++) {
-		int key = arr[i];
-		size_t j = i - 1;
-
-		while (j < arr.size() && arr[j] > key) {
-			arr[j + 1] = arr[j];
-			j--;
-		}
-
-		arr[j + 1] = key;
-	}
-}
-void printVector(std::vector<int> numbers) {
-	for (int n : numbers)
-		std::cout << n << " ";
 }
 

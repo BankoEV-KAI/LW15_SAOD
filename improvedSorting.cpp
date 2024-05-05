@@ -3,7 +3,7 @@
 
 #include <algorithm>
 
-//улучшенна€ сортировка пузырьком
+//улучшенна€ сортировка пузырьком #1
 void cocktailSort() {
     resetCounters();
     int* arr = copy();
@@ -53,10 +53,11 @@ void cocktailSort() {
     }
 }
 
-//быстра€ сортировка
+//быстра€ сортировка (тоже улученна€ пузырькова€ (обменом)) 
 void quickSort(int* mas, int size) {
+
     int i = 0;
-    int j = size - 1;
+    int j = size-1;
 
     int mid = mas[size / 2];
 
@@ -65,19 +66,22 @@ void quickSort(int* mas, int size) {
             comparisonCounter++;
             i++;
         }
+        if (mas[i] > mid) //поиск справа элемента, меньшего опорного
+            comparisonCounter++;
         while (mas[j] > mid) {
             comparisonCounter++;
             j--;
         }
+        if (mas[j] < mid)
+            comparisonCounter++;
 
         if (i <= j) {
             int tmp = mas[i];
             mas[i] = mas[j];
             mas[j] = tmp;
-
             i++;
             j--;
-            forwardingCounter += 3;
+            forwardingCounter++; // увеличиваем счетчик на 1 при каждой пересылке
         }
     } while (i <= j);
 
@@ -85,7 +89,7 @@ void quickSort(int* mas, int size) {
         quickSort(mas, j + 1);
     }
     if (i < size) {
-        quickSort(&mas[i], size - i);
+        quickSort(mas + i, size - i);
     }
 }
 
@@ -93,6 +97,7 @@ void startQuickSort() {
     resetCounters();
     int* arr = copy();
     quickSort(arr, sizeTag);
+    forwardingCounter /= 2;
     if (sizeTag <= 20) {
         std::cout << "ќтсортирован быстрой сортировкой: ";
         printArray(arr);
@@ -104,45 +109,54 @@ void startQuickSort() {
     }
 }
 
-void heapify(int arr[], int n, int i) {
-    int largest = i;
-    int left = 2 * i + 1;
-    int right = 2 * i + 2;
 
-    if (left < n) {
+//построение "перамиды" 
+void heapify(int arr[], int left, int right) {
+
+    int i, j, x;
+    i = left; j = 2 * left;
+
+    x = arr[left];
+    if ((j < right) && (arr[j + 1] > arr[j]))
+    {
+        j = j + 1;
+    }
+    while ((j <= right) && (arr[j] > x))
+    {
         comparisonCounter++;
-        if (arr[left] > arr[largest]) {
-            largest = left;
+        arr[i] = arr[j];
+        i = j;
+        forwardingCounter++;
+        j = 2 * j;
+        if ((j < right) && (arr[j + 1] > arr[j]))
+        {
+            j = j + 1;
         }
     }
-
-    if (right < n) {
-        comparisonCounter++;
-        if (arr[right] > arr[largest]) {
-            largest = right;
-        }
-    }
-
-    if (largest != i) {
-        std::swap(arr[i], arr[largest]);
-        forwardingCounter += 3;
-        heapify(arr, n, largest);
-    }
+    comparisonCounter++;
+    arr[i] = x;
 }
 
-//сортировка кучей, она же перамидальна€ сортировка 
+//сортировка кучей, она же перамидальна€ сортировка  (улучшение сортировки выбором)
 void heapSort() {
     resetCounters();
     int* arr = copy();
+    int left = sizeTag / 2 + 1; 
+    int right = sizeTag - 1;
 
-    for (int i = sizeTag / 2 - 1; i >= 0; i--) {
-        heapify(arr, sizeTag, i);
+    
+    while (left > 0) //÷икл построени€ пирамиды
+    {
+        left = left - 1;
+        heapify(arr, left, right);
     }
-
-    for (int i = sizeTag - 1; i > 0; i--) {
-        std::swap(arr[0], arr[i]);
-        forwardingCounter += 3;
-        heapify(arr, i, 0);
+    while (right > 0) //÷икл сортировки
+    {
+        int temp = arr[0];
+        arr[0] = arr[right];
+        arr[right] = temp;
+        right = right - 1;
+        heapify(arr, left, right);
     }
 
     if (sizeTag <= 20) {
@@ -157,7 +171,7 @@ void heapSort() {
 }
 
 
-//улучшенна€ сортировка вставками
+//сортировка Ўелла (улучшенна€ сортировка вставками)
 void shellSort() {
     resetCounters();
     int* arr = copy();
@@ -173,6 +187,7 @@ void shellSort() {
                 comparisonCounter++;
                 if (arr[j - H] > temp) {
                     arr[j] = arr[j - H];
+                    comparisonCounter++;
                     forwardingCounter++;
                 }
                 else {

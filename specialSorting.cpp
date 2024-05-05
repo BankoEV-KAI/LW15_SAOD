@@ -2,12 +2,14 @@
 #include "sorting.h"
 
 #include <iostream>
-Node* ls = nullptr, * head = nullptr;
 
+
+//создание "специальных" массивов элементов
 void generateSpecialArray(bool key) {
 	if (arrayS != nullptr) delete[] arrayS;
 	arrayS = new int[sizeTag];
-	if (!key) {
+
+	if (!key) { //для карманной сортировки БЕЗ повторов
 		for (int i = 0; i < sizeTag; i++) arrayS[i] = i;
 		int randIndex;
 		for (int i = 0; i < sizeTag; i++) {
@@ -15,12 +17,19 @@ void generateSpecialArray(bool key) {
 			std::swap(arrayS[i], arrayS[randIndex]);
 		}
 	}
+
 	std::cout << "Начальный массив: ";
 	printArray(arrayS);
 }
 
+//карманная сортировка БЕЗ повторов
 void pocketSort(bool key) {
 	generateSpecialArray(false);
+	/* Пример из методички
+	sizeTag = 10;
+	arrayS = new int[10] {3, 1, 4, 6, 0, 7, 2, 9, 5, 8};
+	printArray(arrayS);
+	*/
 	resetCounters();
 	int* arr = copy();
 	if (key) { 
@@ -37,12 +46,15 @@ void pocketSort(bool key) {
 		int temp;
 
 		for (int i = 0; i < sizeTag; i++) {
+			
 			while (arr[i] != i) {
+				comparisonCounter++;
 				temp = arr[arr[i]];
 				arr[arr[i]] = arr[i];
 				arr[i] = temp;
 				forwardingCounter++;
 			}
+			comparisonCounter++;
 		}
 	}
 
@@ -55,65 +67,6 @@ void pocketSort(bool key) {
 		std::cout << "Для введенного массива из " << sizeTag << " элементов карманная сортировка потребовала:  ";
 		printCounters();
 	}
-}
-
-void generalizedPocketSort() {
-	if (arrayS != nullptr) delete[] arrayS;
-	arrayS = new int[sizeTag];
-	for (int i = 0; i < sizeTag; i++) arrayS[i] = rand() % 10;
-
-	std::cout << "Начальный "; 
-	printArray(arrayS);
-
-	ls = new Node[10];
-
-	for (int i = 0; i < sizeTag; i++) {
-		if (ls[arrayS[i]].key == -1)
-			ls[arrayS[i]].key = arrayS[i];
-		else if (ls[arrayS[i]].next == NULL) {
-			ls[arrayS[i]].next = new Node;
-			ls[arrayS[i]].tail = ls[arrayS[i]].next;
-			ls[arrayS[i]].next->key = arrayS[i];
-		}
-		else if (ls[arrayS[i]].tail->next == NULL) {
-			ls[arrayS[i]].tail->next = new Node;
-			ls[arrayS[i]].tail->next->key = arrayS[i];
-			ls[arrayS[i]].tail = ls[arrayS[i]].tail->next;
-		}
-	}
-	head = unification(ls);
-	arrayS = convertToArray(head);
-	std::cout << "Отсортированный ";
-	printArray(arrayS);
-}
-
-Node* unification(Node* _ls) {
-	Node* _head = new Node;
-	_head->key = _ls[0].key;
-	_head->next = _ls[0].next;
-	_head->tail = _ls[0].tail;
-	Node* pCurrent = _head;
-	for (int i = 0; i < 9; i++) {
-		if (_ls[i].tail != NULL)
-			pCurrent = _ls[i].tail;
-		pCurrent->next = new Node;
-		pCurrent = pCurrent->next;
-		pCurrent->key = _ls[i + 1].key;
-		pCurrent->next = _ls[i + 1].next;
-		pCurrent->tail = _ls[i + 1].tail;
-	}
-	return _head;
-}
-
-int* convertToArray(Node* _head) {
-	Node* pCurrent = _head;
-	int* c = new int[sizeTag];
-	for (int i = 0; i < sizeTag; i++) {
-		if (pCurrent->key == -1) i--;
-		else c[i] = pCurrent->key;
-		pCurrent = pCurrent->next;
-	}
-	return c;
 }
 
 void countSort(int arr[], int n, int exp) {
@@ -135,18 +88,26 @@ void countSort(int arr[], int n, int exp) {
 	for (int i = n - 1; i >= 0; --i) {
 		output[count[(arr[i] / exp) % BASE] - 1] = arr[i];
 		count[(arr[i] / exp) % BASE]--;
+		forwardingCounter++;
 	}
 
 	for (int i = 0; i < n; ++i) {
 		arr[i] = output[i];
+		forwardingCounter++;
 	}
 	delete[] output;
 }
 
+//поразрядная сортировка БЕЗ использования списка
 void radixSort() {
 	
 	std::cout << "Начальный массив элементов: ";
+
+	/*
+	sizeTag = 15;
+	arrayS = new int[15] {56, 17, 83, 9, 11, 27, 33, 2, 16, 45, 8, 37, 66, 99, 90};
 	printArray(arrayS);
+	*/
 
 	if (sizeTag <= 0) return;
 	resetCounters();
@@ -163,9 +124,130 @@ void radixSort() {
 		std::cout << "Массив, отсортирован по " << i++ << " разряду: " << std::endl;
 		countSort(arr, sizeTag, exp);
 		printArray(arr);
-		std::cout << std::endl;
 	}
 	std::cout << "Полностью отсортированный массив: ";
 	printArray(arr);
+	printCounters();
 }
 
+
+//сортировки которые предполагают использование дополнительного списка
+
+//карманная сортировка С повторами
+void generalizedPocketSort()
+{
+	resetCounters();
+
+	int arraySize = sizeTag;
+	int* arr;
+
+	//создание массива элементов
+	if (sizeTag > 0 && sizeTag <= 10000)
+	{
+		arr = new int[sizeTag];
+		for (int i = 0; i < sizeTag; i++)
+			arr[i] = rand() % sizeTag;
+		std::cout << "Массив создан:" << std::endl;
+		if(sizeTag <= 20)
+			printArray(arr);
+	}
+	else { return; }
+	
+
+	ListItem* sortedArray = new ListItem[sizeTag];
+	for (int i = 0; i < sizeTag; i++)
+		sortedArray[i].next = NULL;
+	for (int i = 0; i < sizeTag; i++, forwardingCounter++)
+		AddItem(&sortedArray[arr[i]], arr[i]); 
+	ShowPocket(sortedArray, sizeTag);
+
+	ShowPocket(sortedArray, sizeTag);
+	printCounters();
+	for (int i = 0; i < sizeTag; i++)
+		ClearList(sortedArray[i].next);
+	delete[] sortedArray;
+}
+
+//поразрядная сортировка С использованием списка
+void RadixSort()
+{
+	int size = sizeTag;
+	fillingArray(true, size);
+	ListItem* sortedArray = new ListItem[10];
+	int* arr = copy();
+	int max = 0;
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] > max)
+			max = arr[i];
+	}
+	int i = 0;
+	resetCounters();
+	while (max >= 1)
+	{
+		i++;
+		max /= 10;
+		for (int j = 0; j < 10; j++)
+			sortedArray[j].next = nullptr;
+		for (int j = 0; j < size; j++)
+		{
+			int div = 1;
+			for (int l = 0; l < i; l++, div *= 10);
+			AddItem(&sortedArray[((arr[j] % div) * 10) / div], arr[j]);
+			forwardingCounter++;
+		}
+		for (int j = 0, l = 0; l < size; j++)
+		{
+			ListItem* tmp = sortedArray[j].next;
+			while (tmp != NULL)
+			{
+				arr[l] = tmp->data;
+				tmp = tmp->next;
+				l++;
+			}
+		}
+		for (int j = 0; j < 10; j++)
+			ClearList(sortedArray[j].next);
+	}
+	std::cout << "Отсортированный массив:" << std::endl;
+	printArray(arr);
+	printCounters();
+	delete[] sortedArray;
+}
+
+
+//Дополнительные функции для создания списка
+
+void AddItem(ListItem* pItem, int value)
+{
+	while (pItem->next != nullptr)
+		pItem = pItem->next;
+	pItem->next = new ListItem;
+	pItem->next->data = value;
+	pItem->next->next = nullptr;
+}
+
+void ClearList(ListItem* head)
+{
+	while (head != nullptr)
+	{
+		ListItem* tmp = head;
+		head = head->next;
+		delete tmp;
+	}
+}
+
+void ShowPocket(ListItem* mas, int n)
+{
+	std::cout << "Отсортированный массив:" << std::endl;
+	for (int i = 0; i < n; i++)
+	{
+		ListItem* current = mas[i].next;
+		while (current != nullptr)
+		{
+			std::cout << current->data << " ";
+			current = current->next;
+		}
+	}
+	std::cout << std::endl;
+}

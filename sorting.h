@@ -11,7 +11,6 @@ const int SIZE10000 = 10000;
 extern int operation;
 extern int sizeTag;
 extern int* arrayS;
-extern std::vector<int> arrayD;
 
 extern int comparisonCounter;
 extern int forwardingCounter;
@@ -26,11 +25,3 @@ void insertionSortArray();
 
 void printArray(int arr[]);
 void fillingArray(bool key, int Size);
-
-
-
-
-void bubbleSortVector(std::vector<int>& numbers);
-void selectionSortVector(std::vector<int> numbers);
-void insertionSortVector(std::vector<int> arr);
-void printVector(std::vector<int> numbers);
