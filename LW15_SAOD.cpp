@@ -1,16 +1,19 @@
 ﻿
 #include "sorting.h"
 #include "menu.h"
-#include <iostream>
 #include "LW15_SAOD.h"
 #include "improvedSorting.h"
 #include "specialSorting.h"
+#include <windows.h>
+#include <iostream>
 
 int size;
 
 int main()
 {
-	setlocale(LC_ALL, "ru");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+
 	srand(static_cast<unsigned int>(time(0)));
 	
 	while (true) {
