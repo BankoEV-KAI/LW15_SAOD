@@ -8,7 +8,7 @@ int comparisonCounter{ 0 };
 int forwardingCounter{ 0 };
 
 
-//для информационной части
+//РґР»СЏ РёРЅС„РѕСЂРјР°С†РёРѕРЅРЅРѕР№ С‡Р°СЃС‚Рё
 
 void resetCounters() {
 	comparisonCounter = 0;
@@ -16,7 +16,7 @@ void resetCounters() {
 }
 
 void printCounters() {
-	std::cout << "сравнений: " << comparisonCounter << ", пересылок: " << forwardingCounter << std::endl;
+	std::cout << "СЃСЂР°РІРЅРµРЅРёР№: " << comparisonCounter << ", РїРµСЂРµСЃС‹Р»РѕРє: " << forwardingCounter << std::endl;
 }
 
 int* copy() {
@@ -49,34 +49,34 @@ void fillingArray(bool key, int size) {
 }
 
 
-//базовые методы сортировки: обменом, выбором, вставками
+//Р±Р°Р·РѕРІС‹Рµ РјРµС‚РѕРґС‹ СЃРѕСЂС‚РёСЂРѕРІРєРё: РѕР±РјРµРЅРѕРј, РІС‹Р±РѕСЂРѕРј, РІСЃС‚Р°РІРєР°РјРё
 
 void bubbleSortArray() {
 	resetCounters();
 	int* arr = copy();
 	for (int i = 0; i < sizeTag - 1; i++) {
 		for (int j = 0; j < sizeTag - i - 1; j++) {
-			comparisonCounter++; //сравнения
+			comparisonCounter++; //СЃСЂР°РІРЅРµРЅРёСЏ
 			if (arr[j] > arr[j + 1]) {
 				std::swap(arr[j], arr[j + 1]);
-				/* В явном виде:
+				/* Р’ СЏРІРЅРѕРј РІРёРґРµ:
 				int* temp = arr[j];
 				arr[j] = arr[j + 1];
 				arr[j + 1] = temp;
 				*/
-				forwardingCounter++; //пересылки
+				forwardingCounter++; //РїРµСЂРµСЃС‹Р»РєРё
 			}
 		}
 	}
 
-	// просто для вывода 
+	// РїСЂРѕСЃС‚Рѕ РґР»СЏ РІС‹РІРѕРґР° 
 	if (sizeTag <= 20) {
-		std::cout << "Отсортирован пузырьковой сортировкой: ";
+		std::cout << "РћС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅ РїСѓР·С‹СЂСЊРєРѕРІРѕР№ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№: ";
 		printArray(arr);
 		printCounters();
 	}
 	else {
-		std::cout << "Для введенного массива из " << sizeTag << " элементов сортировка пузырьком потребовала:  ";
+		std::cout << "Р”Р»СЏ РІРІРµРґРµРЅРЅРѕРіРѕ РјР°СЃСЃРёРІР° РёР· " << sizeTag << " СЌР»РµРјРµРЅС‚РѕРІ СЃРѕСЂС‚РёСЂРѕРІРєР° РїСѓР·С‹СЂСЊРєРѕРј РїРѕС‚СЂРµР±РѕРІР°Р»Р°:  ";
 		printCounters();
 	}
 }
@@ -87,23 +87,23 @@ void selectionSortArray() {
 	for (int i = 0; i < sizeTag - 1; i++) {
 		int min_index = i;
 		for (int j = i + 1; j < sizeTag; j++) {
-			comparisonCounter++; //сравнения
+			comparisonCounter++; //СЃСЂР°РІРЅРµРЅРёСЏ
 			if (arr[j] < arr[min_index]) {
 				min_index = j;
 			}
 		}
 
-		if (arr[min_index] != arr[i]) forwardingCounter++; //пересылки
+		if (arr[min_index] != arr[i]) forwardingCounter++; //РїРµСЂРµСЃС‹Р»РєРё
 		std::swap(arr[i], arr[min_index]);
 	}
 
 	if (sizeTag <= 20) {
-		std::cout << "Отсортирован сортировкой выбором: ";
+		std::cout << "РћС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РІС‹Р±РѕСЂРѕРј: ";
 		printArray(arr);
 		printCounters();
 	}
 	else {
-		std::cout << "Для введенного массива из " << sizeTag << " элементов сортировка выбором потребовала:  ";
+		std::cout << "Р”Р»СЏ РІРІРµРґРµРЅРЅРѕРіРѕ РјР°СЃСЃРёРІР° РёР· " << sizeTag << " СЌР»РµРјРµРЅС‚РѕРІ СЃРѕСЂС‚РёСЂРѕРІРєР° РІС‹Р±РѕСЂРѕРј РїРѕС‚СЂРµР±РѕРІР°Р»Р°:  ";
 		printCounters();
 	}
 }
@@ -117,25 +117,25 @@ void insertionSortArray() {
 		int j = i - 1;
 
 		while (j >= 0 && arr[j] > key) {
-			comparisonCounter++; //сравнения
-			forwardingCounter++; //пересылки
+			comparisonCounter++; //СЃСЂР°РІРЅРµРЅРёСЏ
+			forwardingCounter++; //РїРµСЂРµСЃС‹Р»РєРё
 			arr[j + 1] = arr[j];
 			j--;
 			
 		}
 
-		comparisonCounter++; //сравнения
+		comparisonCounter++; //СЃСЂР°РІРЅРµРЅРёСЏ
 		arr[j + 1] = key;
 	}
 
 
 	if (sizeTag <= 20) {
-		std::cout << "Отсортирован сортировкой вставками: ";
+		std::cout << "РћС‚СЃРѕСЂС‚РёСЂРѕРІР°РЅ СЃРѕСЂС‚РёСЂРѕРІРєРѕР№ РІСЃС‚Р°РІРєР°РјРё: ";
 		printArray(arr);
 		printCounters();
 	}
 	else {
-		std::cout << "Для введенного массива из " << sizeTag << " элементов сортировка вставками потребовала:  ";
+		std::cout << "Р”Р»СЏ РІРІРµРґРµРЅРЅРѕРіРѕ РјР°СЃСЃРёРІР° РёР· " << sizeTag << " СЌР»РµРјРµРЅС‚РѕРІ СЃРѕСЂС‚РёСЂРѕРІРєР° РІСЃС‚Р°РІРєР°РјРё РїРѕС‚СЂРµР±РѕРІР°Р»Р°:  ";
 		printCounters();
 	}
 
