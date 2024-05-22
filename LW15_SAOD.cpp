@@ -11,6 +11,8 @@ int size;
 
 int main()
 {
+	setlocale(LC_ALL, "ru");
+
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 
@@ -29,17 +31,14 @@ int main()
 			switch (operation)
 			{
 			case 1:
-				printMenuCountArray();
-				bubbleSortArray();
-				insertionSortArray();
-				selectionSortArray();
-				startQuickSort();
-				heapSort();
-				shellSort();
-				cocktailSort();
+				if (printMenuCountArray()) {
+					bubbleSortArray();
+					selectionSortArray();
+					insertionSortArray();
+				}
 				break;
 			case 2:
-				printMenuCountArray();
+				if (!printMenuCountArray()) break;
 				while (true) {
 					printMenu(3);
 					enteringNumber(0, 3, operation);
@@ -57,21 +56,20 @@ int main()
 			switch (operation)
 			{
 			case 1:
-				printMenuCountArray();
-				bubbleSortArray();
-				insertionSortArray();
-				selectionSortArray();
+				if (!printMenuCountArray()) break;
+
 				startQuickSort();
 				heapSort();
 				shellSort();
-				cocktailSort();
+
+				//cocktailSort();
 				std::cout << std::endl;
 				break;
 			case 2:
-				printMenuCountArray();
+				if (!printMenuCountArray()) break;
 				while (true) {
 					printMenu(4);
-					enteringNumber(0, 4, operation);
+					enteringNumber(0, 3, operation);
 					operation += 3;
 					if (operation != 3) printSelectType();
 					else break;
@@ -100,12 +98,12 @@ int main()
 				break;
 			case 3:
 				std::cout << "Количество элементов в масииве: ";
-				enteringNumber(1, 10000, sizeTag);
+				enteringNumber(1, 1000, sizeTag);
 				generalizedPocketSort();
 				break;
 			case 4:
 				printMenuCountArray();
-				radixSort();
+				RadixSort();
 				break;
 			default:
 				break;
@@ -119,9 +117,10 @@ int main()
 
 }
 
-void printMenuCountArray() {
+bool printMenuCountArray() {
 	printMenu(2);
 	enteringNumber(0, 5, sizeTag);
+	
 	if (sizeTag == 1) fillingArray(1, 10);
 	else if (sizeTag == 2) fillingArray(1, 100);
 	else if (sizeTag == 3) fillingArray(1, 1000);
@@ -130,10 +129,11 @@ void printMenuCountArray() {
 		enteringNumber(1, 10000, sizeTag);
 		fillingArray(1, sizeTag);
 	}
-	else return;
+	else return false;
 	std::cout << "Массив до сортировок: ";
 	printArray(arrayS);
 	std::cout << std::endl;
+	return true;
 }
 
 void printSelectType() {
@@ -144,15 +144,15 @@ void printSelectType() {
 	switch (operation)
 	{
 	case 0:
-		break;
+		return;
 	case 1:
 		bubbleSortArray();
 		break;
 	case 2:
-		insertionSortArray();
+		selectionSortArray();
 		break;
 	case 3:
-		selectionSortArray();
+		insertionSortArray();
 		break;
 	case 4:
 		startQuickSort();
@@ -163,10 +163,7 @@ void printSelectType() {
 	case 6:
 		shellSort();
 		break;
-	case 7:
-		cocktailSort();
-		break;
 	default:
-		break;
+		return;
 	}
 }

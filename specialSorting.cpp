@@ -1,4 +1,4 @@
-#include "specialSorting.h"
+﻿#include "specialSorting.h"
 #include "sorting.h"
 
 #include <iostream>
@@ -21,6 +21,8 @@ void generateSpecialArray(bool key) {
 	std::cout << "Начальный массив: ";
 	printArray(arrayS);
 }
+
+
 
 //карманная сортировка БЕЗ повторов
 void pocketSort(bool key) {
@@ -58,7 +60,7 @@ void pocketSort(bool key) {
 		}
 	}
 
-	if (sizeTag <= 20) {
+	if (sizeTag <= 200000) {
 		std::cout << "Отсортирован карманной сортировкой: ";
 		printArray(arr);
 		printCounters();
@@ -67,67 +69,6 @@ void pocketSort(bool key) {
 		std::cout << "Для введенного массива из " << sizeTag << " элементов карманная сортировка потребовала:  ";
 		printCounters();
 	}
-}
-
-void countSort(int arr[], int n, int exp) {
-
-	const int BASE = 10;
-	int* output = new int[n];
-	int count[BASE] = { 0 };
-
-	for (int i = 0; i < n; ++i) {
-		count[(arr[i] / exp) % BASE]++;
-	}
-	
-
-	for (int i = 1; i < BASE; ++i) {
-		count[i] += count[i - 1];
-	}
-
-
-	for (int i = n - 1; i >= 0; --i) {
-		output[count[(arr[i] / exp) % BASE] - 1] = arr[i];
-		count[(arr[i] / exp) % BASE]--;
-		forwardingCounter++;
-	}
-
-	for (int i = 0; i < n; ++i) {
-		arr[i] = output[i];
-		forwardingCounter++;
-	}
-	delete[] output;
-}
-
-//поразрядная сортировка БЕЗ использования списка
-void radixSort() {
-	
-	std::cout << "Начальный массив элементов: ";
-
-	/*
-	sizeTag = 15;
-	arrayS = new int[15] {56, 17, 83, 9, 11, 27, 33, 2, 16, 45, 8, 37, 66, 99, 90};
-	printArray(arrayS);
-	*/
-
-	if (sizeTag <= 0) return;
-	resetCounters();
-	int* arr = copy();
-
-	int maxNum = arr[0];
-	for (int i = 1; i < sizeTag; ++i) {
-		if (arr[i] > maxNum) {
-			maxNum = arr[i];
-		}
-	}
-	int i{ 1 };
-	for (int exp = 1; maxNum / exp > 0; exp *= 10) {
-		std::cout << "Массив, отсортирован по " << i++ << " разряду: " << std::endl;
-		countSort(arr, sizeTag, exp);
-		printArray(arr);
-	}
-	std::cout << "Полностью отсортированный массив: ";
-	printArray(arr);
-	printCounters();
 }
 
 
@@ -142,7 +83,7 @@ void generalizedPocketSort()
 	int* arr;
 
 	//создание массива элементов
-	if (sizeTag > 0 && sizeTag <= 10000)
+	if (sizeTag > 0 && sizeTag <= 1000)
 	{
 		arr = new int[sizeTag];
 		for (int i = 0; i < sizeTag; i++)
@@ -156,10 +97,10 @@ void generalizedPocketSort()
 
 	ListItem* sortedArray = new ListItem[sizeTag];
 	for (int i = 0; i < sizeTag; i++)
-		sortedArray[i].next = NULL;
+		sortedArray[i].next = nullptr;
+
 	for (int i = 0; i < sizeTag; i++, forwardingCounter++)
 		AddItem(&sortedArray[arr[i]], arr[i]); 
-	ShowPocket(sortedArray, sizeTag);
 
 	ShowPocket(sortedArray, sizeTag);
 	printCounters();
@@ -171,22 +112,30 @@ void generalizedPocketSort()
 //поразрядная сортировка С использованием списка
 void RadixSort()
 {
+	setlocale(LC_ALL, "ru");
+
+	/*sizeTag = 15;
+	arrayS = new int[15] {56, 17, 83, 9, 11, 27, 33, 2, 16, 45, 8, 37, 66, 99, 90};
+	printArray(arrayS);*/
+
 	int size = sizeTag;
-	fillingArray(true, size);
-	ListItem* sortedArray = new ListItem[10];
+	
 	int* arr = copy();
-	int max = 0;
+
+	ListItem* sortedArray = new ListItem[10];
+	int max = 0; //макимальное число в списке => максимальное количство разрядов
 	for (int i = 0; i < size; i++)
 	{
 		if (arr[i] > max)
 			max = arr[i];
 	}
+
 	int i = 0;
 	resetCounters();
 	while (max >= 1)
 	{
 		i++;
-		max /= 10;
+		max /= 10; 
 		for (int j = 0; j < 10; j++)
 			sortedArray[j].next = nullptr;
 		for (int j = 0; j < size; j++)
@@ -216,7 +165,7 @@ void RadixSort()
 }
 
 
-//Дополнительные функции для создания списка
+//Дополнительные функции для работы со списком
 
 void AddItem(ListItem* pItem, int value)
 {
@@ -250,4 +199,66 @@ void ShowPocket(ListItem* mas, int n)
 		}
 	}
 	std::cout << std::endl;
+}
+
+
+//поразрядная сортировка БЕЗ использования списка
+void radixSort() {
+
+	std::cout << "Начальный массив элементов: ";
+
+	/*
+	sizeTag = 15;
+	arrayS = new int[15] {56, 17, 83, 9, 11, 27, 33, 2, 16, 45, 8, 37, 66, 99, 90};
+	printArray(arrayS);
+	*/
+
+	if (sizeTag <= 0) return;
+	resetCounters();
+	int* arr = copy();
+
+	int maxNum = arr[0];
+	for (int i = 1; i < sizeTag; ++i) {
+		if (arr[i] > maxNum) {
+			maxNum = arr[i];
+		}
+	}
+	int i{ 1 };
+	for (int exp = 1; maxNum / exp > 0; exp *= 10) {
+		std::cout << "Массив, отсортирован по " << i++ << " разряду: " << std::endl;
+		countSort(arr, sizeTag, exp);
+		printArray(arr);
+	}
+	std::cout << "Полностью отсортированный массив: ";
+	printArray(arr);
+	printCounters();
+}
+
+void countSort(int arr[], int n, int exp) {
+
+	const int BASE = 10;
+	int* output = new int[n];
+	int count[BASE] = { 0 };
+
+	for (int i = 0; i < n; ++i) {
+		count[(arr[i] / exp) % BASE]++;
+	}
+
+
+	for (int i = 1; i < BASE; ++i) {
+		count[i] += count[i - 1];
+	}
+
+
+	for (int i = n - 1; i >= 0; --i) {
+		output[count[(arr[i] / exp) % BASE] - 1] = arr[i];
+		count[(arr[i] / exp) % BASE]--;
+		forwardingCounter++;
+	}
+
+	for (int i = 0; i < n; ++i) {
+		arr[i] = output[i];
+		forwardingCounter++;
+	}
+	delete[] output;
 }

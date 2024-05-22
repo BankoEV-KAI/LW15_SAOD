@@ -1,5 +1,5 @@
 #pragma once
 
-void printMenuCountArray();
+bool printMenuCountArray();
 
 void printSelectType();

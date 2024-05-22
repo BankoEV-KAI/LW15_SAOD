@@ -1,4 +1,4 @@
-#include "sorting.h"
+﻿#include "sorting.h"
 #include "menu.h"
 
 int operation{0};
@@ -16,7 +16,7 @@ void resetCounters() {
 }
 
 void printCounters() {
-	std::cout << "сравнений: " << comparisonCounter << ", пересылок: " << forwardingCounter << std::endl;
+	std::cout << "сравнений: " << comparisonCounter << ", перестановок: " << forwardingCounter << std::endl;
 }
 
 int* copy() {
@@ -70,7 +70,7 @@ void bubbleSortArray() {
 	}
 
 	// просто для вывода 
-	if (sizeTag <= 20) {
+	if (sizeTag <= 20000) {
 		std::cout << "Отсортирован пузырьковой сортировкой: ";
 		printArray(arr);
 		printCounters();
@@ -93,11 +93,20 @@ void selectionSortArray() {
 			}
 		}
 
-		if (arr[min_index] != arr[i]) forwardingCounter++; //пересылки
-		std::swap(arr[i], arr[min_index]);
+		if (arr[min_index] != arr[i]) {
+			forwardingCounter++; //пересылки
+
+			std::swap(arr[i], arr[min_index]);
+
+			/* В явном виде:
+				int* temp = arr[i];
+				arr[i] = arr[min_index];
+				arr[i] = temp;
+			*/
+		}
 	}
 
-	if (sizeTag <= 20) {
+	if (sizeTag <= 2000) {
 		std::cout << "Отсортирован сортировкой выбором: ";
 		printArray(arr);
 		printCounters();
@@ -111,25 +120,51 @@ void selectionSortArray() {
 void insertionSortArray() {
 	resetCounters();
 
+	/*arrayS = new int[6] {15, 33, 42, 7, 12, 19};
+	sizeTag = 6;*/
+	
+
 	int* arr = copy();
+	
+
 	for (int i = 1; i < sizeTag; i++) {
-		int key = arr[i];
+		int temp = arr[i];
 		int j = i - 1;
-
-		while (j >= 0 && arr[j] > key) {
-			comparisonCounter++; //сравнения
-			forwardingCounter++; //пересылки
-			arr[j + 1] = arr[j];
+		comparisonCounter++;
+		forwardingCounter++;
+		while (j >= 0 && temp < arr[j]) {
+			comparisonCounter++;
+			arr[j + 1] = arr[j];  
+			/* фактически тут происходит "сдвиг" элемента, то есть на первой иттерации*(i=1) если массив был [5, 3, 4, 1, 2], то
+			* он примет вид [5, 5, 4, 1, 2] в последствии на эту позицию будет вставлена та самая 3 [3, 5, 4, 1, 2] 
+			*/
 			j--;
-			
+			forwardingCounter++;
 		}
-
-		comparisonCounter++; //сравнения
-		arr[j + 1] = key;
+		arr[j + 1] = temp;
+		forwardingCounter++;
 	}
+	forwardingCounter = int(forwardingCounter / 3);
 
+	//for (int i = 1; i < sizeTag; i++) {
+	//	int temp = arr[i]; 
+	//	int j = i - 1; 
+	//	while (j >= 0 && temp < arr[j]) {
+	//		comparisonCounter++; //сравнения
+	//		forwardingCounter++; //перестановки
+	//		std::swap(arr[j + 1], arr[j]);
+	//		/* в явном виде swap:
+	//			int* temp = arr[j];
+	//			arr[j] = arr[j + 1];
+	//			arr[j + 1] = temp;
+	//		*/
+	//		j--;
+	//	}
+	//	if (j != -1) 
+	//		comparisonCounter++; //сравнения вайл не сработал, но сравление было
+	//}	
 
-	if (sizeTag <= 20) {
+	if (sizeTag <= 5000) {
 		std::cout << "Отсортирован сортировкой вставками: ";
 		printArray(arr);
 		printCounters();
